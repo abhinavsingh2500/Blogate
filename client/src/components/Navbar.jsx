@@ -13,6 +13,7 @@ const navigate = useNavigate();
         Login
         <img src={assets.arrow} className='w-3' alt="arrow" />
       </button>
+      
     </div>
   )
 }
