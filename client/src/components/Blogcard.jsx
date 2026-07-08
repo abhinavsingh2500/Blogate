@@ -8,8 +8,7 @@ const Blogcard = ({blog}) => {
     // Strip HTML tags from description
     const plainText = description.replace(/<[^>]*>/g, '');
     
-    const handleCardClick = useCallback((e) => {
-      e.preventDefault();
+    const handleCardClick = useCallback(() => {
       if (_id) {
         navigate(`/blog/${_id}`);
       }
@@ -17,14 +16,12 @@ const Blogcard = ({blog}) => {
     
   return (
     <div 
-      className='bg-white border border-gray-200 rounded-lg shadow hover:shadow-lg transition-all duration-300 cursor-pointer pointer-events-auto' 
+      className='bg-white border border-gray-200 rounded-lg shadow hover:shadow-lg transition-all duration-300 cursor-pointer' 
       onClick={handleCardClick}
-      role="button"
-      tabIndex="0"
     >
-      <img src={image} alt={title} className='aspect-video object-cover rounded-lg w-full pointer-events-none' />
-      <span className='ml-5 mt-4 px-3 py-1 inline-block bg-primary/20 text-primary rounded-full pointer-events-none'>{category}</span>
-      <div className='p-5 pointer-events-none'>
+      <img src={image} alt={title} className='aspect-video object-cover rounded-lg w-full' />
+      <span className='ml-5 mt-4 px-3 py-1 inline-block bg-primary/20 text-primary rounded-full'>{category}</span>
+      <div className='p-5'>
         <h5 className='mb-2 font-medium text-gray-900'>{title}</h5>
         <p className='text-gray-600 mb-3 text-xs'>{plainText.slice(0, 100)}...</p>
       </div>
