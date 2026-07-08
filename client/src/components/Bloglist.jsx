@@ -1,27 +1,22 @@
 import React from 'react'
-import { blogCategories } from '../assets/assets'
+import { blog_data, blogCategories } from '../assets/assets'
 import { useState } from 'react'
 import { motion } from "motion/react"
+import BlogCard from './Blogcard'
 const Bloglist = () => {
   const [menu, setMenu] = useState('All')
   return (
     <div>
     <div className='flex justify-center gap-5 sm:gap-8 my-10 relative'>
         {blogCategories.map((item)=>(
-          <div key={item} className=' relative px-4 py-2 sm:px-6 sm:py-3 rounded-full border border-gray-300 text-sm sm:text-base cursor-pointer hover:bg-primary hover:text-white transition-colors duration-300'>
-         <button onClick={() => setMenu(item)} className={`cursor-pointer text-black hover:text-white ${menu === item && "bg-primary text-white"}`}>
+          <div key={item} onClick={() => setMenu(item)} className={`relative px-4 py-2 sm:px-6 sm:py-3 rounded-full border border-gray-300 text-sm sm:text-base cursor-pointer transition-colors duration-300 ${menu === item ? 'bg-primary text-white border-primary' : 'hover:bg-primary hover:text-white'}`}>
             {item}
-            {menu === item && (
-              <motion.div
-                layoutId='underline' transition={{ type: "spring", stiffness: 500, damping: 30 }}
-              />
-            )}
-            </button>   
           </div>
         ))}
     </div>
-      <div>{/*blog card*/}</div> 
-   
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-5 pointer-events-auto'>
+        {blog_data.filter((blog)=>menu === 'All' ? true: blog.category === menu).map((blog) => <BlogCard key={blog._id} blog={blog} />)}
+      </div>
     </div>
   )
 }
