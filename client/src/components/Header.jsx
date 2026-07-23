@@ -20,7 +20,7 @@ const Header = () => {
   <input type="text" placeholder='Search for blogs' className='px-4 py-2 sm:px-6 sm:py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base w-full max-w-md' />
   <button className='bg-primary text-white px-4 py-2 sm:px-6 sm:py-3 rounded-full text-sm sm:text-base font-semibold hover:bg-primary-dark transition-colors duration-300'>Search</button>
 </form>
-      <img src={assets.gradientBackground} alt="" className='absolute -top-50-z-1  opacity-50' />
+      <img src={assets.gradientBackground} alt="" className='absolute inset-0 w-full h-full object-cover -z-10 opacity-50 pointer-events-none' />
     </div>
   )
 }

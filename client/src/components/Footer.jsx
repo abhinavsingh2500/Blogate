@@ -26,7 +26,7 @@ const Footer = () => {
             </div>
           ))}
         </div>
-        {/* hehe */}
+      
       </div>
       
       <p className="text-center text-gray-600 py-6">Copyright 2026 @ BLOGATE. All Rights Reserved</p>

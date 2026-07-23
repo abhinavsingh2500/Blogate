@@ -14,7 +14,7 @@ const Bloglist = () => {
           </div>
         ))}
     </div>
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-5 pointer-events-auto'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-5 cursor-pointer'>
         {blog_data.filter((blog)=>menu === 'All' ? true: blog.category === menu).map((blog) => <BlogCard key={blog._id} blog={blog} />)}
       </div>
     </div>
