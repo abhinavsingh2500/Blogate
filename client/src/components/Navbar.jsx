@@ -2,18 +2,26 @@ import React from 'react'
 import { assets } from '../assets/assets'
 import { useNavigate } from 'react-router-dom'
 
-
 const Navbar = () => {
+  const navigate = useNavigate()
 
-const navigate = useNavigate();
   return (
-    <div className='flex justify-between items-center py-5 mx-8 sm:mx-20 xl:mx-32'>
-      <img onClick={() => navigate('/')} src={assets.logo} alt="logo" className='w-32 sm:w-44 rounded-full cursor-pointer' />
-      <button onClick={() => navigate('/admin')} className='flex items-center gap-2 rounded-full text-sm  bg-primary text-white px-10 py-2.5 cursor-pointer'>
-        Login
-        <img src={assets.arrow} className='w-3' alt="arrow" />
-      </button>
-      
+    <div className='relative z-50 px-4 py-4'>
+      <div className='mx-auto flex max-w-7xl items-center justify-between rounded-full border border-white/80 bg-white/70 px-4 py-3 shadow-[0_10px_35px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:px-6'>
+        <img
+          onClick={() => navigate('/')}
+          src={assets.logo}
+          alt='logo'
+          className='w-28 cursor-pointer rounded-full ring-2 ring-primary/20 sm:w-36'
+        />
+        <button
+          onClick={() => navigate('/admin')}
+          className='flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-[#e4bf67] px-5 py-2.5 text-sm font-semibold text-slate-900 transition duration-300 hover:-translate-y-0.5 hover:shadow-md sm:px-6'
+        >
+          Login
+          <img src={assets.arrow} className='w-3' alt='arrow' />
+        </button>
+      </div>
     </div>
   )
 }

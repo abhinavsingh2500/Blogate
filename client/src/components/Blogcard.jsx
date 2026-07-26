@@ -1,31 +1,37 @@
 import React, { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const Blogcard = ({blog}) => {
-    const navigate = useNavigate();
-    const {title, description, category, image, _id} = blog;
-    
-    // Strip HTML tags from description
-    const plainText = description.replace(/<[^>]*>/g, '');
-    
-    const handleCardClick = useCallback(() => {
-      if (_id) {
-        navigate(`/blog/${_id}`);
-      }
-    }, [_id, navigate]);
-    
+const Blogcard = ({ blog }) => {
+  const navigate = useNavigate()
+  const { title, description, category, image, _id } = blog
+
+  const plainText = description.replace(/<[^>]*>/g, '')
+
+  const handleCardClick = useCallback(() => {
+    if (_id) {
+      navigate(`/blog/${_id}`)
+    }
+  }, [_id, navigate])
+
   return (
-    <div 
-      className='bg-white border border-gray-200 rounded-lg shadow hover:shadow-lg transition-all duration-300 cursor-pointer' 
+    <article
+      className='group cursor-pointer overflow-hidden rounded-[1.5rem] border border-slate-200/80 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(15,23,42,0.14)]'
       onClick={handleCardClick}
     >
-      <img src={image} alt={title} className='aspect-video object-cover rounded-lg w-full' />
-      <span className='ml-5 mt-4 px-3 py-1 inline-block bg-primary/20 text-primary rounded-full'>{category}</span>
-      <div className='p-5'>
-        <h5 className='mb-2 font-medium text-gray-900'>{title}</h5>
-        <p className='text-gray-600 mb-3 text-xs'>{plainText.slice(0, 100)}...</p>
+      <div className='relative overflow-hidden'>
+        <img src={image} alt={title} className='aspect-video w-full object-cover transition duration-500 group-hover:scale-[1.03]' />
+        <span className='absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-primary-700 shadow-sm'>
+          {category}
+        </span>
       </div>
-    </div>
+      <div className='p-6'>
+        <h5 className='mb-3 text-lg font-semibold text-slate-900'>{title}</h5>
+        <p className='mb-4 text-sm leading-6 text-slate-600'>{plainText.slice(0, 100)}...</p>
+        <div className='inline-flex items-center gap-2 text-sm font-semibold text-primary-700'>
+          Read story <span className='text-base'>→</span>
+        </div>
+      </div>
+    </article>
   )
 }
 

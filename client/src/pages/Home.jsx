@@ -7,13 +7,15 @@ import Footer from '../components/Footer'
 
 const Home = () => {
   return (
-    <>
-      <Navbar/>
-      <Header/>
-      <Bloglist/>
-      <Newsletter/>
-      <Footer/>
-    </>
+    <div className='min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(200,155,60,0.16),_transparent_35%)]'>
+      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+        <Navbar />
+        <Header />
+        <Bloglist />
+        <Newsletter />
+      </div>
+      <Footer />
+    </div>
   )
 }
 
