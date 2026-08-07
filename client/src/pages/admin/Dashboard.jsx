@@ -14,18 +14,24 @@ const fetchDashboardData = async () => { setDashboardData(dashboard_data) }
 
 useEffect(() => {fetchDashboardData()}, [])
   return (
-    <div className='flex-1 p-4 md:p-10 bg-blue-50/50'>
-      
-      <div className='bg-white p-4 rounded-lg shadow-md flex flex-wrap gap-4'>
-       
-       <div className='flex items-center gap-4 p-4 bg-blue-100 rounded-lg shadow-md'>
+    <div className='flex-1 bg-[#fcfaf5] p-5 md:p-10'>
+      <div className='mx-auto max-w-6xl'>
+        <div className='mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between'>
+          <div>
+            <p className='text-xs font-semibold uppercase tracking-[0.22em] text-primary-700'>Overview</p>
+            <h1 className='mt-1 text-3xl font-semibold text-slate-800'>Your publishing desk</h1>
+          </div>
+          <p className='text-sm text-slate-500'>A quick look at your blog activity.</p>
+        </div>
+        <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+       <div className='flex items-center gap-4 rounded-2xl border border-primary/15 bg-white p-5 shadow-sm'>
         <img src={assets.dashboard_icon_1 } alt="" className='w-16 h-16' />
         <div>
           <p className='text-2xl font-bold'>{dashboardData.blogs}</p>
           <p className='text-gray-500'>Blogs</p>
         </div>
        </div>
-       <div className='flex items-center gap-4 p-4 bg-blue-100 rounded-lg shadow-md'>
+       <div className='flex items-center gap-4 rounded-2xl border border-primary/15 bg-white p-5 shadow-sm'>
         <img src={assets.dashboard_icon_2 } alt="" className='w-16 h-16' />
         <div>
           <p className='text-2xl font-bold'>{dashboardData.comments}</p>
@@ -34,21 +40,27 @@ useEffect(() => {fetchDashboardData()}, [])
         </div>
        </div>
 
-       <div className='flex items-center gap-4 p-4 bg-blue-100 rounded-lg shadow-md'>
+       <div className='flex items-center gap-4 rounded-2xl border border-primary/15 bg-white p-5 shadow-sm'>
         <img src={assets.dashboard_icon_3 } alt="" className='w-16 h-16' />
         <div>
           <p className='text-2xl font-bold'>{dashboardData.drafts}</p>
           <p className='text-gray-500'>Drafts</p>
         </div>
        </div>
-      <div>
-        <img src={assets.dashboard_icon_4 } alt="" className='w-16 h-16' />
-        <div>
-       <p className='text-gray-500'>Recent Blogs</p>
         </div>
-        <div className='relative max-4xl overflow-x-auto shadow rounded-lg scrollbar-hide bg-white'>
+      <div className='mt-8 overflow-hidden rounded-2xl border border-primary/15 bg-white shadow-sm'>
+        <div className='flex items-center gap-3 border-b border-slate-100 px-5 py-4'>
+          <div className='rounded-xl bg-primary/10 p-2'>
+            <img src={assets.dashboard_icon_4 } alt="" className='h-7 w-7' />
+          </div>
+          <div>
+            <h2 className='font-semibold text-slate-800'>Recent blogs</h2>
+            <p className='text-xs text-slate-500'>Your latest published content</p>
+          </div>
+        </div>
+        <div className='relative overflow-x-auto scrollbar-hide'>
           <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
-            <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
+            <thead className='bg-slate-800 text-xs uppercase tracking-wider text-slate-200'>
               <tr>
                 <th scope='col' className='px-6 py-3 xl:px-6'>
                   #

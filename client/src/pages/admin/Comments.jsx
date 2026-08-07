@@ -20,19 +20,23 @@ const Comments = () => {
     )
   }
   return (
-    <div className='flex-1 pt-5 px-5 sm:pt-12 sm:pl-16 bg-blue-50/50 ' >
-      <div className='flex justify-between items-center max-w-3xl mb-5'>
-        <h1>Comments</h1>
-        <div className='flex gap-4 items-center'>
-          <button onClick={() => setFilter('Approved')} className={`shadow-custom-sm border rounded-full px-4 py-1 cursor-pointer text-xs ${filter === 'Approved' ? 'text-primary': 'text-gray-700'}`}> Approved</button>
+    <div className='flex-1 bg-[#fcfaf5] p-5 md:p-10' >
+      <div className='mx-auto max-w-5xl'>
+      <div className='mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between'>
+        <div>
+          <p className='text-xs font-semibold uppercase tracking-[0.22em] text-primary-700'>Community</p>
+          <h1 className='mt-1 text-3xl font-semibold text-slate-800'>Reader comments</h1>
+        </div>
+        <div className='flex rounded-xl border border-primary/20 bg-white p-1 shadow-sm'>
+          <button onClick={() => setFilter('Approved')} className={`rounded-lg px-4 py-2 cursor-pointer text-xs font-medium transition ${filter === 'Approved' ? 'bg-primary text-slate-900': 'text-slate-500 hover:bg-primary/10'}`}> Approved</button>
 
-           <button onClick={() => setFilter('Not Approved')} className={`shadow-custom-sm border rounded-full px-4 py-1 cursor-pointer text-xs ${filter === 'Not Approved' ? 'text-primary': 'text-gray-700'}`}> Not Approved</button>
+           <button onClick={() => setFilter('Not Approved')} className={`rounded-lg px-4 py-2 cursor-pointer text-xs font-medium transition ${filter === 'Not Approved' ? 'bg-primary text-slate-900': 'text-slate-500 hover:bg-primary/10'}`}> Pending</button>
 
         </div>
       </div>
-     <div className='relative h-4/5 max-w-4xl overflow-x-auto shadow rounded-lg scrollbar-hide bg-white'>
+     <div className='relative overflow-x-auto rounded-2xl border border-primary/15 bg-white shadow-sm scrollbar-hide'>
      <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
-      <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
+      <thead className='bg-slate-800 text-xs uppercase tracking-wider text-slate-200'>
         <tr>
           <th scope="col" className='px-6 py-3'>
             Comment
@@ -61,6 +65,7 @@ const Comments = () => {
      </table>
 
      </div>
+    </div>
     </div>
    
   )
