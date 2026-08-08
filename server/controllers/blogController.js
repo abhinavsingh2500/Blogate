@@ -83,7 +83,7 @@ export const addBlog = async (req, res) => {
 
 export const getAllBlogs = async (req, res) => {
     try {
-        const blogs = await Blog.find({});
+        const blogs = await Blog.find({ isPublished: true }).sort({ createdAt: -1 });
         res.json({
             success: true,
             blogs
@@ -100,10 +100,10 @@ export const getBlogById = async (req, res) => {
     try {
         const { blogId } = req.params;
         const blog = await Blog.findById(blogId);
-        if (!blog) {
+        if (!blog || !blog.isPublished) {
             return res.json({
                 success: false,
-                message: "Blog not found"
+                message: "Blog not published or not found"
             });
         }
         res.json({
@@ -118,9 +118,10 @@ export const getBlogById = async (req, res) => {
     }
 };
 
+
 export const deleteBlogById = async (req, res) => {
     try {
-        const { id } = req.body;
+        const id = req.body.id || req.params.id || req.body.blogId;
         const blog = await Blog.findByIdAndDelete(id);
 
         // Delete all comments associated with this blog
@@ -140,7 +141,7 @@ export const deleteBlogById = async (req, res) => {
 
 export const togglePublish = async (req, res) => {
     try {
-        const { id } = req.body;
+        const id = req.body.id || req.params.id || req.body.blogId;
         const blog = await Blog.findById(id);
         if (!blog) {
             return res.json({
@@ -152,7 +153,7 @@ export const togglePublish = async (req, res) => {
         await blog.save();
         res.json({
             success: true,
-            message: "Blog publish status toggled successfully"
+            message: `Blog ${blog.isPublished ? 'published' : 'unpublished'} successfully`
         });
     } catch (error) {
         res.json({
@@ -161,6 +162,7 @@ export const togglePublish = async (req, res) => {
         });
     }
 };
+
 
 export const addComment=async(req,res)=>{
     try {

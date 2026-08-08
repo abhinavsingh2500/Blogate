@@ -1,22 +1,46 @@
 import jwt from "jsonwebtoken";
 import Blog from "../models/Blog.js";
 import Comment from "../models/Comments.js";
+import User from "../models/User.js";
 
+export const adminRegister = async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+        if (!name || !email || !password) {
+            return res.json({ success: false, message: "Please fill all fields" });
+        }
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.json({ success: false, message: "User already exists with this email" });
+        }
+        const user = await User.create({ name, email, password });
+        const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET || 'secret');
+        return res.json({ success: true, token, message: "Account created successfully" });
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+};
 
 export const adminLogin = async (req, res) => {
-
-    try{
-        const {email,password}=req.body;
-        if(email!==process.env.ADMIN_EMAIL || password!==process.env.ADMIN_PASSWORD){
-            return res.json({success:false,message:"Invalid credentials"})
+    try {
+        const { email, password } = req.body;
+        // Check env credentials first
+        if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+            const token = jwt.sign({ email }, process.env.JWT_SECRET || 'secret');
+            return res.json({ success: true, token });
         }
-       const token=jwt.sign({email},process.env.JWT_SECRET)
-       return res.json({success:true,token})
+        // Check registered users in DB
+        const user = await User.findOne({ email });
+        if (user && user.password === password) {
+            const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET || 'secret');
+            return res.json({ success: true, token });
+        }
+        return res.json({ success: false, message: "Invalid credentials" });
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
     }
-    catch(error){
-        res.json({success:false,message:error.message})
-    }
-}
+};
+
 
 export const getAllBlogsAdmin=async(req,res)=>{
     try {
@@ -45,8 +69,9 @@ export const getDashboard=async(req,res)=>{
         const blogs=await Blog.countDocuments()
         const drafts=await Blog.countDocuments({isPublished:false})
 
-        const dashboardData={blogs,Comments,drafts,recentBlogs}
-        res.json({success:true,dashboardData})
+        const dashboardData = { blogs, comments: Comments, drafts, recentBlogs }
+        res.json({ success: true, dashboardData })
+
     
     }
     catch(error){

@@ -5,7 +5,7 @@ import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
 
 const Addblog = () => {
-    const { axios } = useAppContext();
+    const { axios, fetchblogs } = useAppContext();
     const [isAdding, setIsAdding] = useState(false);
     const editorRef = useRef(null);
     const quillRef = useRef(null);
@@ -51,6 +51,7 @@ const Addblog = () => {
             const { data } = await axios.post("/api/blog/add", formData);
             if (data.success) {
                 toast.success(data.message);
+                if (fetchblogs) fetchblogs();
                 setImage(false);
                 setTitle("");
                 setSubTitle("");
@@ -66,6 +67,7 @@ const Addblog = () => {
             setIsAdding(false);
         }
     }
+
 
 
     useEffect(() => {

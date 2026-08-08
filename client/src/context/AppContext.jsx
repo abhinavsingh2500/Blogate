@@ -35,8 +35,9 @@ export const AppProvider = ({ children }) => {
     }, []);
 
     const value = {
-        axios, navigate, token, setToken, blog, setBlog, input, setInput, searchInput: input, setSearchInput: setInput
+        axios, navigate, token, setToken, blog, setBlog, input, setInput, searchInput: input, setSearchInput: setInput, fetchblogs
     };
+
 
 
     return (

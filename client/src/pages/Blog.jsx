@@ -4,61 +4,65 @@ import Navbar from '../components/Navbar'
 import { blog_data, assets, comments_data } from '../assets/assets'
 import Footer from '../components/Footer'
 import Loader from '../components/Loader'
+import { useAppContext } from '../context/AppContext'
+import toast from 'react-hot-toast'
 
 const Blog = () => {
-  const { id } = useParams()
+  const { id } = useParams();
+  const { axios, navigate } = useAppContext();
 
-  const {axios}=useAppContext();
-
-  
   const [data, setData] = useState(null)
   const [comments, setComments] = useState([])
   const [name, setName] = useState('')
   const [content, setContent] = useState('')
 
-  const fetchBlogData = async() => {
-    try{
-     const{data}=await axios.get(`/blog/get/${id}`);
-     data.success ? setData(data.blog) : toast.error(data.message);
+  const fetchBlogData = async () => {
+    try {
+      const { data } = await axios.get(`/api/blog/${id}`);
+      if (data.success) {
+        setData(data.blog);
+      } else {
+        toast.error(data.message || "Blog not published or not found");
+        if (navigate) navigate('/');
+      }
+    } catch (error) {
+      toast.error(error.message);
+      if (navigate) navigate('/');
     }
-    catch(error){
-      toast.error(error.message)
-    }
-    
   }
+
 
   const fetchComments = async () => {
-    try{
-      const{data}=await axios.get(`/blog/comments/${id}`);
+    try {
+      const { data } = await axios.post('/api/blog/comments', { blogId: id });
       data.success ? setComments(data.comments) : toast.error(data.message);
-    }
-    catch(error){
-      toast.error(error.message)
+    } catch (error) {
+      toast.error(error.message);
     }
   }
 
-  const addComment = async(e) => {
-    e.preventDefault()
-  try{
-    const {data}=await axios.post(`/api/blog/add-comment`,{blogId:id,name,content});
-   if(data.success){
-    setName('')
-    setContent('')
-   }
-   
-   else {
-    toast.error(data.message);
-   }
-  }
-  catch(error){
-    toast.error(error.message);
-  }
+  const addComment = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post('/api/blog/add-comment', { blog: id, name, content });
+      if (data.success) {
+        toast.success(data.message);
+        setName('');
+        setContent('');
+        fetchComments();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   }
 
   useEffect(() => {
     fetchBlogData()
     fetchComments()
   }, [id])
+
 
   const formatDate = (dateString) => {
     if (!dateString) return ''

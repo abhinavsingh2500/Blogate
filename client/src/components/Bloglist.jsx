@@ -9,7 +9,8 @@ const Bloglist = () => {
   const [menu, setMenu] = useState('All');
   const navigate = useNavigate();
 
-  const allBlogs = Array.isArray(blog) ? blog : [];
+  const allBlogs = (Array.isArray(blog) ? blog : []).filter(item => item.isPublished !== false);
+
 
   const searchFiltered = allBlogs.filter((item) => {
     if (!input) return true;
