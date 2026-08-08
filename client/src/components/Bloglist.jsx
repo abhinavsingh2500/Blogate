@@ -1,16 +1,30 @@
-import React from 'react'
-import { blog_data, blogCategories } from '../assets/assets'
-import { useState } from 'react'
+import React, { useState } from 'react'
+import { blogCategories } from '../assets/assets'
 import { useNavigate } from 'react-router-dom'
 import BlogCard from './Blogcard'
+import { useAppContext } from '../context/AppContext'
 
 const Bloglist = () => {
-  const [menu, setMenu] = useState('All')
-  const navigate = useNavigate()
+  const { blog, input } = useAppContext();
+  const [menu, setMenu] = useState('All');
+  const navigate = useNavigate();
 
-  const filteredBlogs = blog_data.filter((blog) => (menu === 'All' ? true : blog.category === menu))
-  const featuredBlog = filteredBlogs[0]
-  const restBlogs = filteredBlogs.slice(1)
+  const allBlogs = Array.isArray(blog) ? blog : [];
+
+  const searchFiltered = allBlogs.filter((item) => {
+    if (!input) return true;
+    return (
+      item.title?.toLowerCase().includes(input.toLowerCase()) ||
+      item.category?.toLowerCase().includes(input.toLowerCase())
+    );
+  });
+
+  const categoryFiltered = searchFiltered.filter((item) => 
+    menu === 'All' ? true : item.category === menu
+  );
+
+  const featuredBlog = categoryFiltered[0];
+  const restBlogs = categoryFiltered.slice(1);
 
   return (
     <section className='mx-auto max-w-7xl px-2 py-10 sm:px-4 lg:px-0'>
@@ -41,7 +55,7 @@ const Bloglist = () => {
             <div className='order-2 lg:order-1'>
               <p className='text-sm font-semibold uppercase tracking-[0.3em] text-primary-700'>Featured story</p>
               <h3 className='mt-3 text-2xl font-semibold text-slate-900'>{featuredBlog.title}</h3>
-              <p className='mt-3 text-sm leading-7 text-slate-600'>{featuredBlog.description.replace(/<[^>]*>/g, '').slice(0, 180)}...</p>
+              <p className='mt-3 text-sm leading-7 text-slate-600'>{featuredBlog.description?.replace(/<[^>]*>/g, '').slice(0, 180)}...</p>
               <span className='mt-5 inline-flex rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-900 shadow-sm transition duration-300 group-hover:bg-primary group-hover:text-white'>
                 Read now
               </span>
@@ -52,8 +66,8 @@ const Bloglist = () => {
       )}
 
       <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
-        {restBlogs.map((blog) => (
-          <BlogCard key={blog._id} blog={blog} />
+        {restBlogs.map((blogItem) => (
+          <BlogCard key={blogItem._id} blog={blogItem} />
         ))}
       </div>
     </section>
@@ -61,3 +75,4 @@ const Bloglist = () => {
 }
 
 export default Bloglist
+

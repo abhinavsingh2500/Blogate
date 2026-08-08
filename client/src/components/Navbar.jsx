@@ -1,9 +1,9 @@
 import React from 'react'
 import { assets } from '../assets/assets'
-import { useNavigate } from 'react-router-dom'
-
+import { useContext } from 'react'
+import { AppContext } from '../context/AppContext'
 const Navbar = () => {
-  const navigate = useNavigate()
+  const {navigate,token}=useContext(AppContext)
 
   return (
     <div className='relative z-50 px-4 py-4'>
@@ -18,7 +18,7 @@ const Navbar = () => {
           onClick={() => navigate('/admin')}
           className='flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-[#e4bf67] px-5 py-2.5 text-sm font-semibold text-slate-900 transition duration-300 hover:-translate-y-0.5 hover:shadow-md sm:px-6'
         >
-          Login
+          {token ? 'Dashboard' : 'Login'}
           <img src={assets.arrow} className='w-3' alt='arrow' />
         </button>
       </div>

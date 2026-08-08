@@ -7,25 +7,52 @@ import Loader from '../components/Loader'
 
 const Blog = () => {
   const { id } = useParams()
+
+  const {axios}=useAppContext();
+
+  
   const [data, setData] = useState(null)
   const [comments, setComments] = useState([])
   const [name, setName] = useState('')
   const [content, setContent] = useState('')
 
-  const fetchBlogData = () => {
-    const foundBlog = blog_data.find((item) => item._id === id)
-    setData(foundBlog)
+  const fetchBlogData = async() => {
+    try{
+     const{data}=await axios.get(`/blog/get/${id}`);
+     data.success ? setData(data.blog) : toast.error(data.message);
+    }
+    catch(error){
+      toast.error(error.message)
+    }
+    
   }
 
   const fetchComments = async () => {
-    setComments(comments_data)
+    try{
+      const{data}=await axios.get(`/blog/comments/${id}`);
+      data.success ? setComments(data.comments) : toast.error(data.message);
+    }
+    catch(error){
+      toast.error(error.message)
+    }
   }
 
-  const addComment = (e) => {
+  const addComment = async(e) => {
     e.preventDefault()
-    const nameValue = e.target[0].value
-    const contentValue = e.target[1].value
-    console.log(nameValue, contentValue)
+  try{
+    const {data}=await axios.post(`/api/blog/add-comment`,{blogId:id,name,content});
+   if(data.success){
+    setName('')
+    setContent('')
+   }
+   
+   else {
+    toast.error(data.message);
+   }
+  }
+  catch(error){
+    toast.error(error.message);
+  }
   }
 
   useEffect(() => {

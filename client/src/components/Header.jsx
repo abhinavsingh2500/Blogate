@@ -1,7 +1,19 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { assets } from '../assets/assets'
+import { useAppContext } from '../context/AppContext'
 
 const Header = () => {
+  const inputRef = useRef();
+  const { navigate, setInput, setSearchInput } = useAppContext();
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    const updateInput = setSearchInput || setInput;
+    if (updateInput && inputRef.current) {
+      updateInput(inputRef.current.value);
+    }
+  }
+
   return (
     <section className='relative mt-4 overflow-hidden rounded-[2rem] border border-white/80 bg-white/70 px-6 py-8 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:px-10 lg:px-14 lg:py-12'>
       <div className='absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(200,155,60,0.18),_transparent_45%)]' />
@@ -16,15 +28,30 @@ const Header = () => {
             “The first thing you need to decide when you build your blog is what you want to accomplish with it, and what it can do if successful.”
             <span className='mt-2 block font-semibold text-slate-800'>Ron Dawson</span>
           </p>
-          <form className='mt-8 flex w-full max-w-xl flex-col gap-3 sm:flex-row'>
+          <form onSubmit={onSubmitHandler} className='mt-8 flex w-full max-w-xl flex-col gap-3 sm:flex-row'>
             <input
+              ref={inputRef}
               type='text'
               placeholder='Search for blogs'
               className='flex-1 rounded-full border border-slate-200 bg-white/90 px-4 py-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 sm:px-6'
             />
-            <button className='rounded-full bg-gradient-to-r from-primary to-[#e5c36b] px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-md'>Search</button>
+            <button type="submit" className='rounded-full bg-gradient-to-r from-primary to-[#e5c36b] px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-md'>Search</button>
           </form>
+          <div className='mt-3'>
+            <button
+              type='button'
+              onClick={() => {
+                if (inputRef.current) inputRef.current.value = "";
+                const updateInput = setSearchInput || setInput;
+                if (updateInput) updateInput('');
+              }}
+              className='text-xs font-medium text-slate-500 hover:text-slate-900 underline cursor-pointer'
+            >
+              Clear Search
+            </button>
+          </div>
         </div>
+
 
         <div className='rounded-[1.5rem] border border-slate-200/80 bg-slate-900 p-6 text-white shadow-[0_20px_45px_rgba(15,23,42,0.18)]'>
           <p className='text-sm font-semibold uppercase tracking-[0.3em] text-primary'>Featured now</p>
