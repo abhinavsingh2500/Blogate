@@ -90,14 +90,20 @@ export const deleteCommentsById=async(req,res)=>{
     }
 }
 
-export const approveComment=async(req,res)=>{
+export const approveComment = async (req, res) => {
     try {
-        const {id}=req.body;
-        const comment=await Comment.findByIdAndUpdate(id,{isApproved:true});
-
-        res.json({success:true,message:"Comment approved successfully"});
+        const { id } = req.body;
+        const comment = await Comment.findById(id);
+        if (!comment) {
+            return res.json({ success: false, message: "Comment not found" });
+        }
+        comment.isApproved = !comment.isApproved;
+        await comment.save();
+        res.json({
+            success: true,
+            message: `Comment ${comment.isApproved ? 'approved' : 'unapproved'} successfully`
+        });
+    } catch (error) {
+        res.json({ success: false, message: error.message });
     }
-    catch(error){
-        res.json({success:false,message:error.message});
-    }
-}
+};
